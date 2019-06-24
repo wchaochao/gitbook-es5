@@ -1,9 +1,9 @@
 # Summary
 
 * [Introduction](README.md)
-* Global对象
-* Object构造器
-* Function构造器
+* [Global对象](lib/global.md)
+* [Object构造器](lib/object.md)
+* [Function构造器](lib/function.md)
 * Array构造器
 * Number构造器
 * String构造器
