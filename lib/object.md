@@ -566,16 +566,6 @@ Object.prototype.constructor = Object
  * this为null, 返回'[object Null]'
  * this为其他，转换为Object类型，返回`[object ${O.[[Class]]}]`
  */
-if (this === undefined) {
-  return '[object Undefined]'
-}
-
-if (this === null) {
-  return '[object Null]'
-}
-
-let O = ToObject(this)
-return `[object ${O.[[Class]]}]`
 ```
 
 示例
