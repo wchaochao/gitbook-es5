@@ -4,7 +4,7 @@
 * [Global对象](lib/global.md)
 * [Object构造器](lib/object.md)
 * [Function构造器](lib/function.md)
-* Array构造器
+* [Array构造器](lib/array.md)
 * Number构造器
 * String构造器
 * Boolean构造器
