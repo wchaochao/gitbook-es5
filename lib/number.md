@@ -115,6 +115,8 @@ Number.prototype.constructor = Number
 
 ### 原型方法
 
+* this不为Boolean类型或Boolean对象，抛出TypeError
+
 **转换方法**
 
 #### Number.prototype.toString([radix])
@@ -123,7 +125,6 @@ Number.prototype.constructor = Number
 
 ```javascript
 /**
- * this不为Number类型或Number对象，抛出TypeError
  * radix为undefined，置为10
  * radix不为undefined，转换为整数
  *    不在[2, 36]之内，抛出TypeError
@@ -148,8 +149,7 @@ Number.prototype.toString.call(true) // 抛出TypeError
 
 ```javascript
 /**
- * this不为Number类型或Number对象，抛出TypeError
- * this为Number类型或Number对象，返回数字的本地字符串
+ * 返回数字的本地字符串
  */
 ```
 
@@ -167,8 +167,7 @@ Number.prototype.toLocaleString.call(true) // 抛出TypeError
 
 ```javascript
 /**
- * this不为Number类型或Number对象，抛出TypeError
- * this为Number类型或Number对象，返回[[PrimitiveValue]]值
+ * 返回[[PrimitiveValue]]值
  */
 ```
 
@@ -188,7 +187,6 @@ Number.prototype.valueOf.call(true) // 抛出TypeError
 
 ```javascript
 /**
- * this不为Number类型或Number对象，抛出TypeError
  * fractionDigits转换为整数f
  *    f不在[0, 20]之内，抛出RangeError（允许具体实现保留超过20位小数，如chome允许保留[0, 100]个小数）
  * this转换为Number类型x
@@ -225,7 +223,6 @@ Number.prototype.toFixed.call(true) // 抛出TypeError
 
 ```javascript
 /**
- * this不为Number类型或Number对象，抛出TypeError
  * this转换为Number类型x
  *    x为NaN，返回'NaN'
  *    x为负数，符号为负，其他按正数处理
@@ -264,7 +261,6 @@ Number.prototype.toExponential.call(true) // 抛出TypeError
 
 ```javascript
 /**
- * this不为Number类型或Number对象，抛出TypeError
  * precision为undefined时，返回ToString(this)
  * this转换为Number类型x
  *    x为NaN，返回'NaN'
