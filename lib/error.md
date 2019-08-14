@@ -1,105 +1,72 @@
-# Error对象
+# Error构造器
 
 标签（空格分隔）： ES5
 
 ---
 
-类型为`Error`的对象
-
 ## 构造函数
 
-```
-语法：function Error(message: String[, fileName: String[, lineNumber: Number]]) {...}
-解释：创建一个错误对象
-参数：message - 错误信息，默认为空字符串
-     fileName - 错误所在的文件名称，非标准
-     lineNumber - 错误所在的文件行号，非标准
-返回值：返回创建的错误对象
+### Error(message)
 
-Error(message)等同于new Error(message)
-```
-
-### 子类
-
-#### SyntaxError
-
-语法错误
+作为函数使用，等同于作为构造器使用
 
 ```javascript
-// 变量名错误
-var 1a; // Uncaught SyntaxError: Invalid or unexpected token
-
-// 缺少括号
-console.log 'hello'); // Uncaught SyntaxError: Unexpected string
+/**
+ * 调用new Error
+ */
 ```
 
-#### ReferenceError
+### new Error(message)
 
-引用错误
+作为构造器使用，创建Error对象
 
 ```javascript
-// 使用一个不存在的变量
-unknownVariable // Uncaught ReferenceError: unknownVariable is not defined
-
-// this 对象不能手动赋值
-this = 1 // ReferenceError: Invalid left-hand side in assignment
+/**
+ * 参数处理
+ *   message为undefined时，置为''
+ *   message不为undefined时，转换为String类型
+ * 
+ * 创建Error对象
+ * [[Class]]属性为'Error'
+ * [[Prototype]]属性为Error.prototype
+ * [[Extensible]]属性为true
+ * message属性为message
+ */
 ```
 
-#### RangeError
-
-超出有效范围
+示例
 
 ```javascript
-// 数组长度不得为负数
-new Array(-1) // Uncaught RangeError: Invalid array length
-```
-
-#### TypeError
-
-类型错误
-
-```javascript
-new 123 // Uncaught TypeError: number is not a function
-
-var obj = {};
-obj.unknownMethod() // Uncaught TypeError: obj.unknownMethod is not a function
-```
-
-#### URIError
-
-URI函数错误
-
-```javascript
-decodeURI('%2') // URIError: URI malformed
-```
-
-#### EvalError
-
-eval函数错误
-
-#### 自定义错误类型
-
-```javascript
-function UserError(message) {
-  this.message = message || '默认信息';
-  this.name = 'UserError';
-}
-
-UserError.prototype = new Error();
-UserError.prototype.constructor = UserError;
-
-new UserError('这是自定义的错误！');
+new Error() // Error
+new Error('err') // Error: err
 ```
 
 ### 静态属性
 
-* `length`:`1`, 可接受的参数个数
-* `prototype`: `Error`实例对象的原型对象，是个`Object`对象
-* `__proto__`: `Function.prototype`, 原型，非标准属性
+```javascript
+Error.[[Class]] = 'Function'
+Error.[[Prototype]] = Function.Prototype
+Error.[[Extensible]] = true
+
+Error.[[DefineOwnProperty]]('length', {
+  [[Value]]: 1,
+  [[Writable]]: false,
+  [[Enumerable]]: false,
+  [[Configurable]]: false
+}, false)
+Error.[[DefineOwnProperty]]('prototype', {
+  [[Value]]: {constructor: Error,...},
+  [[Writable]]: false,
+  [[Enumerable]]: false,
+  [[Configurable]]: false
+}, false)
+```
 
 ## 原型对象
 
-```
+Error对象的原型
+
+```javascript
 Error.prototype
 err.__proto__
 err.constructor.prototype
@@ -108,51 +75,92 @@ Object.getPrototypeOf(err)
 
 ### 原型属性
 
-* `constructor`: `Error`, 构造函数
-* `__proto__`: `Object.prototype`, 原型，非标准属性
+```javascript
+Error.prototype.[[Class]] = 'Error'
+Error.prototype.[[Prototype]] = Object.prototype
+Error.prototype.[[Extensible]] = true
+
+Error.prototype.constructor = Error
+Error.prototype.name = 'Error'
+Error.prototype.message = ''
+```
 
 ### 原型方法
 
-#### Error.prototype.toString()
+#### Error.prototype.toString( )
 
-```
-语法：Error.prototype.toString()
-解释：返回当前Error对象的字符串表示
-返回值：一般返回this.name + ": " + this.message
-```
-
-profill
+获取Error对象的字符串表示
 
 ```javascript
-Error.prototype.toString = function () {
-  "use strict";
+/**
+ * this不为对象时，抛出TypeError
+ * 获取this的name属性
+ *   name为undefined时，置为'Error'
+ *   name不为undefined时，转换为String类型
+ * 获取this的message属性
+ *   message为undefined时，置为''
+ *   message不为undefined时，转换为String类型
+ * name为空字符串时，返回message
+ * name不为空字符串时
+ *   message为空字符串时，返回name
+ *   message不为空字符串时，返回name + ': ' + message
+ */
+```
 
-  var name = this.name;
-  name = (name === undefined) ? "Error" : String(name);
+示例
 
-  var msg = this.message;
-  msg = (msg === undefined) ? "" : String(msg);
-
-  return name + (name !== "" && msg !== "" ? ": " : "") + msg;
-}
+```javascript
+Error.prototype.toString.call(1) // 抛出TypeError
+Error.prototype.toString.call({name: '', message: 'message'}) // 'message'
+Error.prototype.toString.call({}) // 'Error'
+Error.prototype.toString.call({message: 'message'}) // 'Error: message'
+new Error('this is a error').toString() // 'Error: this is a error'
 ```
 
 ## 实例对象
 
-### 创建
+[[Class]]为Error的对象
 
 ```javascript
-// 构造函数法
-var arr = new Error(message[, fileName[, lineNumber]]);
-var arr = Error(message[, fileName[, lineNumber]]);
+// 通过构造器Error创建
+new Error('err')
 ```
 
 ### 实例属性
 
-* `__proto__`: `Error.prototype`, 原型，非标准属性
-* `message`: 错误信息
-* `name`: 错误名称, 非标准属性
-* `stack`: 错误堆栈, 非标准属性
-* `fileName`: 错误所在的文件名称, 非标准属性
-* `lineNumber`: 错误所在的文件行号, 非标准属性
-* `columnNumber`: 错误所在的文件列号, 非标准属性
+```javascript
+err.[[Class]] = 'Error'
+err.[[Prototype]] = Error.prototype
+err.[[Extensible]] = true
+
+err.name = 'Error'
+err.message = message
+```
+
+## NativeError
+
+Error的子类
+
+* `SyntaxError`: 语法错误
+* `ReferenceError`: 引用错误
+* `RangeError`: 超出有效范围
+* `TypeError`: 类型错误
+* `URIError`: URI编码/解码错误
+* `EvalError`: Eval执行错误
+
+### 实例属性
+
+```javascript
+nativeErr.[[Class]] = 'Error'
+nativeErr.[[Prototype]] = NativeError.prototype
+nativeErr.[[Extensible]] = true
+
+nativeErr.name = NativeErrorName
+nativeErr.message = message
+```
+
+示例
+
+```javascript
+new RangeError('This is a range error') // RangeError: This is a range error
+```
