@@ -300,3 +300,44 @@ decodeURIComponent('http://www.w3school.com.cn/My%20first/') // http://www.w3sch
 
 decodeURIComponent('http%3A%2F%2Fwww.w3school.com.cn%2Fp%201%2F') // http://www.w3school.com.cn/p 1/ 
 ```
+
+### 扩展方法
+
+#### escape(string)
+
+对字符串进行转义
+
+```javascript
+/**
+ * string转换为String类型，对string的每个字符进行转义
+ *   字符为a-zA-Z0-9@*_+-./，仍为该字符
+ *   字符Unicode码小于256，改为%xx形式
+ *   字符Unicode码不小于256，改为%uxxxx形式
+ */
+```
+
+示例
+
+```javascript
+escape('a') // 'a'
+escape('?') // '%3F'
+escape('中') // '%u4E2D'
+```
+
+### unescape(string)
+
+对字符串解转义
+
+```javascript
+/**
+ * string转换为String类型，对%xx、%uxxxx进行解转义
+ */
+```
+
+示例
+
+```javascript
+unescape('a') // 'a'
+unescape('%3F') // '?'
+unescape('%u4E2D') // '中'
+```
